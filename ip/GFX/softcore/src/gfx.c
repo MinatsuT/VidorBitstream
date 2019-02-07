@@ -42,6 +42,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "np.h"
 #include "gfx.h"
 
+#include "system.h"
+
 #define _swap_int16_t(a,b) {int16_t t=a; a=b; b=t;}
 
 #if defined(GFX_FONTS) && (GFX_FONTS == 1)
@@ -59,6 +61,21 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #define SEC_RAM  __attribute__((__section__(".rwdata")))
+
+#define USE_GFX_HW 1
+#if defined(USE_GFX_HW) && (USE_GFX_HW == 1)
+  #define GFX_HW_CMD_GPSET 1
+  #define GFX_HW_CMD_GLINE 2
+
+  #define GFX_HW_IDX_CMD   0
+  #define GFX_HW_IDX_X0    1
+  #define GFX_HW_IDX_Y0    2
+  #define GFX_HW_IDX_X1    3
+  #define GFX_HW_IDX_Y1    4
+  #define GFX_HW_IDX_COLOR 5
+
+  static volatile int32_t *gfx_hw = (int32_t *) (GFX_BASE);
+#endif
 
 /**
  * local variables
@@ -357,14 +374,18 @@ alt_u32 SEC_RAM rd32(void* arg, alt_u16 x, alt_u16 y)
 
 /**
  */
-alt_u32 writeHLine(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 l, alt_u32 color)
+alt_u32 SEC_RAM writeHLine(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 l, alt_u32 color)
 {
+#if defined(USE_GFX_HW) && (USE_GFX_HW == 1)
+  writeLine(pGc, x, y, x+l-1, y, color);
+#else
   alt_u32 i;
 
   pGc->color = colorFormat(pGc, color);
   for(i=x; i<x+l; i++){
     pGc->pix(pGc, i, y);
   }
+#endif
   return 0;
 }
 
@@ -372,20 +393,31 @@ alt_u32 writeHLine(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 l, alt_u32 color)
  */
 alt_u32 writeVLine(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 l, alt_u32 color)
 {
+#if defined(USE_GFX_HW) && (USE_GFX_HW == 1)
+  writeLine(pGc, x, y, x, y+l-1, color);
+#else
   alt_u32 i;
-
   pGc->color = colorFormat(pGc, color);
   for(i=y; i<y+l; i++){
     pGc->pix(pGc, x, i);
   }
+#endif
   return 0;
 }
 
 /**
  *
  */
-alt_u32 writeLine(GFXgc* pGc, alt_u16 x0, alt_u16 y0, alt_u16 x1, alt_u16 y1, alt_u32 color)
+alt_u32 SEC_RAM writeLine(GFXgc* pGc, alt_u16 x0, alt_u16 y0, alt_u16 x1, alt_u16 y1, alt_u32 color)
 {
+#if defined(USE_GFX_HW) && (USE_GFX_HW == 1)
+  gfx_hw[GFX_HW_IDX_X0] = x0;
+  gfx_hw[GFX_HW_IDX_Y0] = y0;
+  gfx_hw[GFX_HW_IDX_X1] = x1;
+  gfx_hw[GFX_HW_IDX_Y1] = y1;
+  gfx_hw[GFX_HW_IDX_COLOR] = colorFormat(pGc, color);
+  gfx_hw[GFX_HW_IDX_CMD] = GFX_HW_CMD_GLINE;
+#else
   alt_16 steep = abs(y1 - y0) > abs(x1 - x0);
   alt_16 dx, dy;
   alt_16 err;
@@ -424,13 +456,14 @@ alt_u32 writeLine(GFXgc* pGc, alt_u16 x0, alt_u16 y0, alt_u16 x1, alt_u16 y1, al
       err += dx;
     }
   }
+#endif
   return 0;
 }
 
 /**
  * Draw a rectangle
  */
-alt_u32 drawRect(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 w, alt_u16 h, alt_u32 color)
+alt_u32 SEC_RAM drawRect(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 w, alt_u16 h, alt_u32 color)
 {
   writeHLine(pGc, x, y, w, color);
   writeHLine(pGc, x, y+h-1, w, color);
@@ -442,7 +475,7 @@ alt_u32 drawRect(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 w, alt_u16 h, alt_u32
 /**
  * Draw fille rectangle
  */
-alt_u32 fillRect(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 w, alt_u16 h, alt_u32 color)
+alt_u32 SEC_RAM fillRect(GFXgc* pGc, alt_u16 x, alt_u16 y, alt_u16 w, alt_u16 h, alt_u32 color)
 {
   alt_u32 i;
   for (i=x; i<x+w; i++) {
