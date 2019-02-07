@@ -4,4 +4,5 @@
 **/output_files
 **/*.sopcinfo
 **/*_sys
-distrib/Vidor*
+distrib/MKRVIDOR4000_*
+TOOLS/makeCompositeBinary/MakeCompositeBinary

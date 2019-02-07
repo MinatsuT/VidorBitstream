@@ -17,6 +17,14 @@
          type = "int";
       }
    }
+   element GFX
+   {
+      datum _sortIndex
+      {
+         value = "27";
+         type = "int";
+      }
+   }
    element JTAG_BRIDGE
    {
       datum _sortIndex
@@ -805,6 +813,11 @@
   <parameter name="pVSS" value="490" />
   <parameter name="pVTOTAL" value="525" />
  </module>
+ <module name="GFX" kind="GFX" version="1.0" enabled="1">
+  <parameter name="pADDRESS_BITS" value="22" />
+  <parameter name="pFB_OFFSET" value="614400" />
+  <parameter name="pFB_SIZE" value="307200" />
+ </module>
  <module name="JTAG_BRIDGE" kind="JTAG_BRIDGE" version="1.0" enabled="1" />
  <module name="MIPI_RX_ST_0" kind="MIPI_RX_ST" version="1.0" enabled="1" />
  <module name="NEOPIXEL_0" kind="NEOPIXEL" version="1.0" enabled="1">
@@ -906,7 +919,7 @@
   <parameter name="dataAddrWidth" value="24" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='SDRAM_ARBITER.avl' start='0x0' end='0x800000' type='SDRAM_ARBITER.avl' /><slave name='qspi.avl_mem' start='0x800000' end='0xA00000' type='arduino_generic_quad_spi_controller2.avl_mem' /><slave name='onchip_memory2_0.s1' start='0xA00000' end='0xA04000' type='altera_avalon_onchip_memory2.s1' /><slave name='qspi.avl_csr' start='0xA04CC0' end='0xA04D00' type='arduino_generic_quad_spi_controller2.avl_csr' /><slave name='sam_pio.s1' start='0xA05400' end='0xA05420' type='PIO.s1' /><slave name='pex_pio.s1' start='0xA05420' end='0xA05440' type='PIO.s1' /><slave name='wm_pio.s1' start='0xA05440' end='0xA05460' type='PIO.s1' /><slave name='hdmi_i2c.avalon_slave_0' start='0xA05460' end='0xA05480' type='o_i2c_master.avalon_slave_0' /><slave name='sam_pwm.avalon_slave_0' start='0xA05480' end='0xA05500' type='PWM.avalon_slave_0' /><slave name='QUAD_ENCODER_0.avalon_slave_0' start='0xA05500' end='0xA05540' type='QUAD_ENCODER.avalon_slave_0' /><slave name='NEOPIXEL_0.csr' start='0xA05540' end='0xA05580' type='NEOPIXEL.csr' /><slave name='nina_spi.d' start='0xA05580' end='0xA055A0' type='tiny_spi.d' /><slave name='irq.s1' start='0xA055C0' end='0xA055D0' type='altera_avalon_pio.s1' /><slave name='timer_0.s1' start='0xA05800' end='0xA05820' type='altera_avalon_timer.s1' /><slave name='csi_i2c.avalon_slave_0' start='0xA06000' end='0xA06020' type='o_i2c_master.avalon_slave_0' /><slave name='flash_spi.d' start='0xA07000' end='0xA07020' type='tiny_spi.d' /><slave name='QRCODE_FINDER_0.ctrl' start='0xA08000' end='0xA0A000' type='QRCODE_FINDER.ctrl' /><slave name='mb.slv' start='0xA0A000' end='0xA0A800' type='MAILBOX.slv' /><slave name='sysid_qsys_0.control_slave' start='0xA0FFE8' end='0xA0FFF0' type='altera_avalon_sysid_qsys.control_slave' /><slave name='nios2_gen2_0.debug_mem_slave' start='0xA10000' end='0xA10800' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='SDRAM_ARBITER.avl' start='0x0' end='0x800000' type='SDRAM_ARBITER.avl' /><slave name='qspi.avl_mem' start='0x800000' end='0xA00000' type='arduino_generic_quad_spi_controller2.avl_mem' /><slave name='onchip_memory2_0.s1' start='0xA00000' end='0xA04000' type='altera_avalon_onchip_memory2.s1' /><slave name='qspi.avl_csr' start='0xA04CC0' end='0xA04D00' type='arduino_generic_quad_spi_controller2.avl_csr' /><slave name='sam_pio.s1' start='0xA05400' end='0xA05420' type='PIO.s1' /><slave name='pex_pio.s1' start='0xA05420' end='0xA05440' type='PIO.s1' /><slave name='wm_pio.s1' start='0xA05440' end='0xA05460' type='PIO.s1' /><slave name='hdmi_i2c.avalon_slave_0' start='0xA05460' end='0xA05480' type='o_i2c_master.avalon_slave_0' /><slave name='sam_pwm.avalon_slave_0' start='0xA05480' end='0xA05500' type='PWM.avalon_slave_0' /><slave name='QUAD_ENCODER_0.avalon_slave_0' start='0xA05500' end='0xA05540' type='QUAD_ENCODER.avalon_slave_0' /><slave name='NEOPIXEL_0.csr' start='0xA05540' end='0xA05580' type='NEOPIXEL.csr' /><slave name='nina_spi.d' start='0xA05580' end='0xA055A0' type='tiny_spi.d' /><slave name='irq.s1' start='0xA055C0' end='0xA055D0' type='altera_avalon_pio.s1' /><slave name='timer_0.s1' start='0xA05800' end='0xA05820' type='altera_avalon_timer.s1' /><slave name='csi_i2c.avalon_slave_0' start='0xA06000' end='0xA06020' type='o_i2c_master.avalon_slave_0' /><slave name='flash_spi.d' start='0xA07000' end='0xA07020' type='tiny_spi.d' /><slave name='QRCODE_FINDER_0.ctrl' start='0xA08000' end='0xA0A000' type='QRCODE_FINDER.ctrl' /><slave name='mb.slv' start='0xA0A000' end='0xA0A800' type='MAILBOX.slv' /><slave name='GFX.AVL' start='0xA0B000' end='0xA0B400' type='GFX.AVL' /><slave name='sysid_qsys_0.control_slave' start='0xA0FFE8' end='0xA0FFF0' type='altera_avalon_sysid_qsys.control_slave' /><slave name='nios2_gen2_0.debug_mem_slave' start='0xA10000' end='0xA10800' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -1186,6 +1199,15 @@
  <connection
    kind="avalon"
    version="18.1"
+   start="GFX.SDRAM"
+   end="SDRAM_ARBITER.avl">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
    start="JTAG_BRIDGE.avalon_master"
    end="mb.mst">
   <parameter name="arbitrationPriority" value="1" />
@@ -1199,6 +1221,15 @@
    end="SDRAM_ARBITER.avl">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.1"
+   start="nios2_gen2_0.data_master"
+   end="GFX.AVL">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00a0b000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1445,6 +1476,7 @@
    version="18.1"
    start="clk.clk"
    end="QRCODE_FINDER_0.clock" />
+ <connection kind="clock" version="18.1" start="clk.clk" end="GFX.clock" />
  <connection kind="clock" version="18.1" start="clk.clk" end="csi_i2c.clock_sink" />
  <connection kind="clock" version="18.1" start="clk.clk" end="sam_pwm.clock_sink" />
  <connection kind="clock" version="18.1" start="clk.clk" end="hdmi_i2c.clock_sink" />
@@ -1545,6 +1577,7 @@
    end="flash_spi.reset" />
  <connection kind="reset" version="18.1" start="clk.clk_reset" end="timer_0.reset" />
  <connection kind="reset" version="18.1" start="clk.clk_reset" end="qspi.reset" />
+ <connection kind="reset" version="18.1" start="clk.clk_reset" end="GFX.reset" />
  <connection
    kind="reset"
    version="18.1"
